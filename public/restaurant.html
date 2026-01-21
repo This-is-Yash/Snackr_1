@@ -1,0 +1,75 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant Login – Snackr</title>
+  <style>
+    body{font-family:Arial,sans-serif;background:#e6fff0;display:flex;justify-content:center;align-items:center;height:100vh;}
+    .box{background:#fff;padding:30px;border-radius:10px;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,0.1);width:300px;}
+    input,button{width:90%;padding:10px;margin:8px 0;border-radius:5px;border:1px solid #ccc;}
+    button{background:#00994d;color:white;border:none;cursor:pointer;}
+    button:hover{background:#008040;}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>🍴 Restaurant Login</h2>
+    <form action="/login/restaurant" method="POST">
+      <input type="email" name="email" placeholder="Email" required><br>
+      <input type="password" name="password" placeholder="Password" required><br>
+      <button type="submit">Login</button>
+    </form>
+    <hr>
+    <h3>Register</h3>
+    <form action="/register/restaurant" method="POST">
+      <input type="text" name="name" placeholder="Restaurant Name" required><br>
+      <input type="email" name="email" placeholder="Email" required><br>
+      <input type="password" name="password" placeholder="Password" required><br>
+      <input type="text" name="address" placeholder="Address" required><br>
+      <button type="submit">Register</button>
+    </form>
+    <p><a href="/">⬅ Back to main</a></p>
+  </div>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant Login – Snackr</title>
+  <style>
+    body{font-family:Arial,sans-serif;background:#e6fff0;display:flex;justify-content:center;align-items:center;height:100vh;}
+    .box{background:#fff;padding:30px;border-radius:10px;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,0.1);width:300px;}
+    input,select,button{width:90%;padding:10px;margin:8px 0;border-radius:5px;border:1px solid #ccc;}
+    button{background:#00994d;color:white;border:none;cursor:pointer;}
+    button:hover{background:#008040;}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>🍴 Restaurant Login</h2>
+    <form action="/login/restaurant" method="POST">
+      <input type="email" name="email" placeholder="Email" required><br>
+      <input type="password" name="password" placeholder="Password" required><br>
+      <button type="submit">Login</button>
+    </form>
+    <hr>
+    <h3>Register</h3>
+    <form action="/register/restaurant" method="POST">
+      <input type="text" name="name" placeholder="Restaurant Name" required><br>
+      <input type="email" name="email" placeholder="Email" required><br>
+      <input type="password" name="password" placeholder="Password" required><br>
+      <input type="text" name="address" placeholder="Address" required><br>
+      <select name="type" required>
+        <option value="">Select Type</option>
+        <option value="Home">🏠 Home Restaurant</option>
+        <option value="Side-by-Side">🍽️ Side-by-Side Delivery</option>
+      </select><br>
+      <button type="submit">Register</button>
+    </form>
+    <p><a href="/">⬅ Back to main</a></p>
+  </div>
+</body>
+</html>
